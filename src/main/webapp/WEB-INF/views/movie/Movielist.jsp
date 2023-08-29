@@ -13,7 +13,7 @@
 	}
 </style>
 <main>
-	<h2>도서 목록</h2>
+	<h2>영화 목록</h2>
 	<div id="top-button">
 		<c:if test="${sessionScope.mvo.grade=='a'}">
 			<a href="movie?cmd=new"><button type="button" class="btn btn-primary">영화등록</button></a>
