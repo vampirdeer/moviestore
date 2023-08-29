@@ -17,9 +17,9 @@ public class MovieDAO {
 	public static MovieDAO getInstance() {
 		return dao;
 	}
-	//---- booktbl crud 작업 메소드 정의
-	// booktbl 모든 데이터를 읽어서 List 담아서 반환하는 메소드 정의
-	public List<MovieVO> getBookList(){
+	//---- movietbl crud 작업 메소드 정의
+	// movietbl 모든 데이터를 읽어서 List 담아서 반환하는 메소드 정의
+	public List<MovieVO> getMovieList(){
 		List<MovieVO> list=null;
 		Connection conn=JDBCUtil.getConnection();
 		PreparedStatement pstmt=null;
@@ -76,7 +76,7 @@ public class MovieDAO {
 		/*
 		select * from (
 			    select rownum rn, A.* from
-			        (select p from booktbl order by bno desc) A
+			        (select p from movietbl order by mno desc) A
 			    where rownum<=15 -- 10 page(현재페이지):3, displayRow(페이지당 표시 행수) : 5 
 			) where rn>=11; -- 6 : page*displayRow-displayRow+1 : 3*5-5+1
 		*/
@@ -120,7 +120,7 @@ public class MovieDAO {
 		sb.append("(select mno,title,director,actor,price,regdate from movietbl");
 		sb.append(" where ");
 		sb.append(searchtype);
-		sb.append(" like ? and disp='y' order by bno desc) A");//최신순 정렬
+		sb.append(" like ? and disp='y' order by mno desc) A");//최신순 정렬
 		sb.append(" where rownum<=?");
 		sb.append(") where rn>=?");
 		System.out.println(sb.toString());
@@ -189,10 +189,12 @@ public class MovieDAO {
 			result=pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			JDBCUtil.close(conn, pstmt);
 		}
 		return result;
 	}
-	// bno 도서번호를 받아서 검색해서 모든 필드를 vo 에 담아서 반환해 줌
+	// mno 도서번호를 받아서 검색해서 모든 필드를 vo 에 담아서 반환해 줌
 	public MovieVO getMovie(int mno) {
 		MovieVO vo=null;
 		Connection conn=JDBCUtil.getConnection();
@@ -263,7 +265,7 @@ public class MovieDAO {
 		Connection conn=JDBCUtil.getConnection();
 		PreparedStatement pstmt=null;
 		try {
-			//pstmt=conn.prepareStatement("delete from booktbl where bno=?");
+			//pstmt=conn.prepareStatement("delete from movietbl where mno=?");
 			pstmt=conn.prepareStatement("update movietbl set disp='n' where mno=?");
 			pstmt.setInt(1, mno);
 			result=pstmt.executeUpdate();

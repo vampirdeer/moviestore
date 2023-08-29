@@ -19,9 +19,9 @@ public class MoviescoreDAO {
 	}
 	/*-------------------------------------
 	 *  삽입 메소드
-	 *  BookscoreVO를 받아서 테이블에 삽입하는 메소드  
+	 *  MoviescoreVO를 받아서 테이블에 삽입하는 메소드  
 	 --------------------------------------*/
-	public int insertBookscore(MoviescoreVO vo) {
+	public int insertMoviescore(MoviescoreVO vo) {
 		int result=0;
 		Connection conn=JDBCUtil.getConnection();
 		PreparedStatement pstmt=null;
@@ -87,6 +87,8 @@ public class MoviescoreDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			JDBCUtil.close(conn, pstmt, rs);
 		}
 		
 		return list;
@@ -116,8 +118,5 @@ public class MoviescoreDAO {
 		//return score;
 		return list;
 	}
-	public void insertMoviescore(MoviescoreVO vo) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 }

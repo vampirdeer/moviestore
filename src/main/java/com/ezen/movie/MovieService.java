@@ -9,7 +9,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -100,6 +99,7 @@ public class MovieService {
 	}
 
 	private void MovieScoreSaveService() throws IOException {
+		System.out.println("MovieScoreSaveService");
 		String id=request.getParameter("id");
 		if(id==null || id=="")id="hong1";
 		String strmno=request.getParameter("mno");
@@ -114,6 +114,7 @@ public class MovieService {
 		MoviescoreDAO dao=MoviescoreDAO.getInstance();
 		// vo 객체 생성
 		MoviescoreVO vo=new MoviescoreVO(0, mno, id, score, cmt, null);
+		System.out.println(vo.toString());
 		// dao 삽입 메소드 수행
 		dao.insertMoviescore(vo);
 		//페이지 이동 필요 없다 
