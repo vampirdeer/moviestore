@@ -45,7 +45,7 @@ public class MoviescoreDAO {
 		Connection conn=JDBCUtil.getConnection();
 		PreparedStatement pstmt=null;
 		ResultSet rs=null;
-		String sql="select count(*) from moviescore where mno=?";
+		String sql="select count(*) from moviescore where mno=? ";
 		try {
 			pstmt=conn.prepareStatement(sql);
 			pstmt.setInt(1, bno);
