@@ -1,5 +1,8 @@
 package com.ezen.movie;
 
+import java.io.File;
+import java.io.IOException;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,10 +23,13 @@ public class ReviewerService {
 		request=req;response=resp;
 	}
 
-	public String exec() {
+	public String exec() throws IOException {
 		String cmd=request.getParameter("cmd");
 		if(cmd.equals("login")) {
-			return LoginService();	
+			return LoginService();
+		}else if(cmd.equals("create")) {
+				return CreateService();
+			
 		}else if(cmd.equals("logout")) {
 			//세션얻기
 			HttpSession s=request.getSession();
@@ -31,43 +37,35 @@ public class ReviewerService {
 			s.invalidate();
 			//페이지이동-List
 			return "movie?cmd=list";
-		}else if(cmd.equals("create")) {
-			return CreateService();
 		}
 		return null;
 	}
 
-	private String CreateService() {
+	
+	private String CreateService() throws IOException {
 		String method=request.getMethod().toUpperCase();
 		if(method.equals("GET")) {
 			return path+"create.jsp";
-		}else {//post
-			//파라메타 받기
+		}else {
+			//view에서 넘어온 데이터를 받는다.
 			String id=request.getParameter("userid");
 			String pwd=request.getParameter("pwd");
 			String name=request.getParameter("name");
 			String email=request.getParameter("email");
 			String phone=request.getParameter("phone");
 			String grade=request.getParameter("grade");
-			//dao 객체생성
+			//vo 객체 생성
+			ReviewerVO rvo=new ReviewerVO(id, pwd, name, email, phone, grade); 
 			ReviewerDAO dao=ReviewerDAO.getInstance();
-			//메소드 수행 결과 받기 
-			ReviewerVO mvo=dao.create(id,pwd,name,email,phone,grade);
-			System.out.println(dao);
-			System.out.println(mvo);
-			if(mvo!=null) {//회원가입 실패
-				//세션 저장->request를 통해서 세션객체 얻기
-				HttpSession session=request.getSession();
-				session.setAttribute("mvo", mvo);
-				//페이지에서 필요로 하는 정보를 저장 ??
-				//페이지이동 : 로그인 쪽으로 이동
-				return path+"create.jsp";
-			}else {//회원가입 성공
-				request.setAttribute("message", "회원가입 성공!");
+			int result=dao.create(rvo);
+			if(result==1) {
 				return path+"login.jsp";
 			}
 		}
+		return null;
+		
 	}
+
 	private String LoginService() {
 		String method=request.getMethod().toUpperCase();
 		if(method.equals("GET")) {
