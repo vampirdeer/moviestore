@@ -22,7 +22,7 @@
 	<c:choose>
 		<c:when test="${sessionScope.mvo==null}">
 			<button type="button" id="login" name="login" onclick="location.href='reviewer?cmd=login'" class="btn btn-success" >로 그 인</button>
-			<button type="button" id="logout" name="logout" onclick="" class="btn btn-warning" >회원가입</button>		
+			<button type="button" id="logout" name="logout" onclick="location.href='reviewer?cmd=create'" class="btn btn-warning" >회원가입</button>		
 		</c:when>
 		<c:otherwise>
 			${sessionScope.mvo.name}님 

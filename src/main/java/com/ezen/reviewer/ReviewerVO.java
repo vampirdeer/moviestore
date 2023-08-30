@@ -18,6 +18,16 @@ public class ReviewerVO {
 		this.grade = grade;
 		this.regdate = regdate;
 	}
+	
+	public ReviewerVO(String id, String pwd, String name, String email, String phone, String grade) {
+		super();
+		this.id = id;
+		this.pwd = pwd;
+		this.name = name;
+		this.email = email;
+		this.phone = phone;
+		this.grade = grade;
+	}
 	public ReviewerVO(String id, String name, String grade) {
 		super();
 		this.id = id;

@@ -23,7 +23,7 @@ public class ReviewerService {
 	public String exec() {
 		String cmd=request.getParameter("cmd");
 		if(cmd.equals("login")) {
-			return LoginService();
+			return LoginService();	
 		}else if(cmd.equals("logout")) {
 			//세션얻기
 			HttpSession s=request.getSession();
@@ -31,10 +31,43 @@ public class ReviewerService {
 			s.invalidate();
 			//페이지이동-List
 			return "movie?cmd=list";
+		}else if(cmd.equals("create")) {
+			return CreateService();
 		}
 		return null;
 	}
 
+	private String CreateService() {
+		String method=request.getMethod().toUpperCase();
+		if(method.equals("GET")) {
+			return path+"create.jsp";
+		}else {//post
+			//파라메타 받기
+			String id=request.getParameter("userid");
+			String pwd=request.getParameter("pwd");
+			String name=request.getParameter("name");
+			String email=request.getParameter("email");
+			String phone=request.getParameter("phone");
+			String grade=request.getParameter("grade");
+			//dao 객체생성
+			ReviewerDAO dao=ReviewerDAO.getInstance();
+			//메소드 수행 결과 받기 
+			ReviewerVO mvo=dao.create(id,pwd,name,email,phone,grade);
+			System.out.println(dao);
+			System.out.println(mvo);
+			if(mvo!=null) {//회원가입 실패
+				//세션 저장->request를 통해서 세션객체 얻기
+				HttpSession session=request.getSession();
+				session.setAttribute("mvo", mvo);
+				//페이지에서 필요로 하는 정보를 저장 ??
+				//페이지이동 : 로그인 쪽으로 이동
+				return path+"create.jsp";
+			}else {//회원가입 성공
+				request.setAttribute("message", "회원가입 성공!");
+				return path+"login.jsp";
+			}
+		}
+	}
 	private String LoginService() {
 		String method=request.getMethod().toUpperCase();
 		if(method.equals("GET")) {
